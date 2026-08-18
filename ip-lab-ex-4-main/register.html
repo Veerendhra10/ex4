@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Job Registration</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    display: flex;
+    justify-content: center;
+    padding: 30px;
+  }
+  .form-box {
+    background: #ffffff;
+    padding: 25px 35px;
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.15);
+    width: 400px;
+  }
+  h2 {
+    text-align: center;
+    color: #333;
+  }
+  label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+    color: #444;
+  }
+  input, select, textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  .error {
+    color: red;
+    font-size: 13px;
+    margin-top: 3px;
+  }
+  button {
+    width: 100%;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #2d6cdf;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #1e54b7;
+  }
+  #successMsg {
+    color: green;
+    text-align: center;
+    margin-top: 15px;
+    font-weight: bold;
+  }
+</style>
+</head>
+<body>
+
+<div class="form-box">
+  <h2>Job  Registration</h2>
+  <form id="registrationForm" novalidate>
+    <label for="fullName">Full Name *</label>
+    <input type="text" id="fullName" placeholder="enter your name">
+    <div class="error" id="fullNameError"></div>
+    <label for="email">Email *</label>
+    <input type="text" id="email" placeholder="enter your email">
+    <div class="error" id="emailError"></div>
+    <label for="phone">Phone Number *</label>
+    <input type="text" id="phone" placeholder="10 digit phone number">
+    <div class="error" id="phoneError"></div>
+    <label for="password">Password *</label>
+    <input type="password" id="password" placeholder="at least 6 characters">
+    <div class="error" id="passwordError"></div>
+    <label for="jobTitle">Desired Job Title *</label>
+    <input type="text" id="jobTitle" placeholder="eg Developer">
+    <div class="error" id="jobTitleError"></div>
+    <label for="experience">Years of Experience *</label>
+    <input type="number" id="experience" placeholder="eg 2">
+    <div class="error" id="experienceError"></div>
+    <label for="resumeLink">Resume Link (Google Drive / Dropbox URL) *</label>
+    <input type="text" id="resumeLink" placeholder="https://.">
+    <div class="error" id="resumeLinkError"></div>
+    <label for="resumeFile">Upload Resume (PDF or DOC only) *</label>
+    <input type="file" id="resumeFile">
+    <div class="error" id="resumeFileError"></div>
+    <button type="submit">Register</button>
+    <div id="successMsg"></div>
+  </form>
+</div>
+<script>
+document.getElementById("registrationForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  let isValid = true;
+  const fullName = document.getElementById("fullName").value.trim();
+  if (fullName === "") {
+    document.getElementById("fullNameError").textContent = "Full name is required.";
+    isValid = false;
+  }
+  const email = document.getElementById("email").value.trim();
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (email === "") {
+    document.getElementById("emailError").textContent = "Email is required.";
+    isValid = false;
+  } else if (!emailPattern.test(email)) {
+    document.getElementById("emailError").textContent = "Please enter a valid email address.";
+    isValid = false;
+  }
+  const phone = document.getElementById("phone").value.trim();
+  const phonePattern = /^[0-9]{10}$/;
+  if (phone === "") {
+    document.getElementById("phoneError").textContent = "Phone number is required.";
+    isValid = false;
+  } else if (!phonePattern.test(phone)) {
+    document.getElementById("phoneError").textContent = "Enter a valid 10 digit phone number.";
+    isValid = false;
+  }
+  const password = document.getElementById("password").value;
+  if (password === "") {
+    document.getElementById("passwordError").textContent = "Password is required.";
+    isValid = false;
+  } else if (password.length < 6) {
+    document.getElementById("passwordError").textContent = "Password must be at least 6 characters.";
+    isValid = false;
+  }
+  const jobTitle = document.getElementById("jobTitle").value.trim();
+  if (jobTitle === "") {
+    document.getElementById("jobTitleError").textContent = "Desired job title is required.";
+    isValid = false;
+  }
+  const experience = document.getElementById("experience").value;
+  if (experience === "") {
+    document.getElementById("experienceError").textContent = "Experience is required.";
+    isValid = false;
+  } else if (experience < 0) {
+    document.getElementById("experienceError").textContent = "Experience cannot be negative.";
+    isValid = false;
+  }
+  const resumeLink = document.getElementById("resumeLink").value.trim();
+  const urlPattern = /^(https?:\/\/)[^\s]+$/;
+  if (resumeLink === "") {
+    document.getElementById("resumeLinkError").textContent = "Resume link is required.";
+    isValid = false;
+  } else if (!urlPattern.test(resumeLink)) {
+    document.getElementById("resumeLinkError").textContent = "Enter a valid URL starting with http:// or https://";
+    isValid = false;
+  }
+  const resumeFile = document.getElementById("resumeFile").value;
+  if (resumeFile === "") {
+    document.getElementById("resumeFileError").textContent = "Please upload your resume.";
+    isValid = false;
+  } else {
+    const allowedExtensions = /(\.pdf|\.doc|\.docx)$/i;
+    if (!allowedExtensions.test(resumeFile)) {
+      document.getElementById("resumeFileError").textContent = "Only PDF or DOC/DOCX files are allowed.";
+      isValid = false;
+    }
+  }
+
+  if (isValid) {
+    document.getElementById("successMsg").textContent = "Registration successful!";
+    document.getElementById("registrationForm").reset();
+  }
+});
+</script>
+
+</body>
+</html>
